@@ -1,9 +1,9 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    password: ${DB_PASSWORD}
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/ecommerce?useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-    username: ${DB_USER}
+    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/ecommerce?useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER}
   jpa:
     generate-ddl: false
     hibernate:
