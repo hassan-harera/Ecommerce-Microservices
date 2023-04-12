@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true, value = { "active" })
-public class UserDto extends BaseEntityDto {
+public class BaseUserDto extends BaseEntityDto {
 
     private String firstName;
     private String lastName;

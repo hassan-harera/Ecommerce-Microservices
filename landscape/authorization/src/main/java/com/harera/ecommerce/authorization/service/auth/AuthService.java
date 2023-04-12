@@ -15,22 +15,15 @@ import org.springframework.stereotype.Service;
 import com.harera.ecommerce.authorization.service.jwt.JwtService;
 import com.harera.ecommerce.authorization.service.jwt.JwtUtils;
 import com.harera.ecommerce.authorization.service.keycloak.KeycloakService;
-import com.google.firebase.auth.FirebaseToken;
-import com.google.firebase.auth.UserRecord;
-import com.harera.ecommerce.authorization.model.auth.FirebaseOauthToken;
 import com.harera.ecommerce.authorization.model.auth.LoginRequest;
 import com.harera.ecommerce.authorization.model.auth.LoginResponse;
 import com.harera.ecommerce.authorization.model.auth.LogoutRequest;
 import com.harera.ecommerce.authorization.model.auth.SignupRequest;
 import com.harera.ecommerce.authorization.model.auth.SignupResponse;
-import com.harera.ecommerce.authorization.model.oauth.OAuthLoginRequest;
-import com.harera.ecommerce.authorization.model.oauth.OauthSignupRequest;
-import com.harera.ecommerce.authorization.model.user.AuthUser;
-import com.harera.ecommerce.authorization.model.user.FirebaseUser;
+import com.harera.ecommerce.authorization.model.user.User;
 import com.harera.ecommerce.authorization.repository.TokenRepository;
 import com.harera.ecommerce.authorization.repository.UserRepository;
 import com.harera.ecommerce.authorization.service.firebase.FirebaseServiceImpl;
-import com.harera.ecommerce.framework.exception.SignupException;
 
 @Service
 public class AuthService {
@@ -65,7 +58,7 @@ public class AuthService {
         authValidation.validateLogin(loginRequest);
 
         long userId = getUserId(loginRequest.getSubject());
-        AuthUser user = userRepository.findById(userId).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new UsernameNotFoundException("User not found"));
 
         if (!Objects.equals(user.getDeviceToken(), loginRequest.getDeviceToken())) {
@@ -78,7 +71,7 @@ public class AuthService {
 
     public SignupResponse signup(SignupRequest signupRequest) {
         authValidation.validate(signupRequest);
-        AuthUser user = modelMapper.map(signupRequest, AuthUser.class);
+        User user = modelMapper.map(signupRequest, User.class);
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
         keycloakService.signup(user, signupRequest.getPassword());
         user = userRepository.save(user);
@@ -89,7 +82,7 @@ public class AuthService {
 
     public void logout(LogoutRequest logoutRequest) {
         String usernameOrMobile = jwtUtils.extractUserSubject(logoutRequest.getToken());
-        final AuthUser user = (AuthUser) loadUserByUsername(usernameOrMobile);
+        final User user = (User) loadUserByUsername(usernameOrMobile);
         if (StringUtils.isNotEmpty(user.getDeviceToken())) {
             user.setDeviceToken(null);
             userRepository.save(user);
@@ -103,7 +96,7 @@ public class AuthService {
     }
 
     private long getUserId(String subject) {
-        Optional<AuthUser> user = Optional.empty();
+        Optional<User> user = Optional.empty();
         if (isPhoneNumber(subject)) {
             user = userRepository.findByMobile(subject);
         } else if (isEmail(subject)) {
@@ -129,7 +122,7 @@ public class AuthService {
 
     public LoginResponse refresh(String refreshToken) {
         String usernameOrMobile = jwtUtils.extractUserSubject(refreshToken);
-        final AuthUser user = (AuthUser) loadUserByUsername(usernameOrMobile);
+        final User user = (User) loadUserByUsername(usernameOrMobile);
         jwtUtils.validateRefreshToken(user, refreshToken);
         LoginResponse authResponse = new LoginResponse();
         authResponse.setToken(jwtService.generateToken(user));

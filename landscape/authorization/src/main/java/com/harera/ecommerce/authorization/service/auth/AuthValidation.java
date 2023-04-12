@@ -24,7 +24,7 @@ import com.harera.ecommerce.authorization.model.auth.SignupRequest;
 import com.harera.ecommerce.authorization.model.oauth.OAuthLoginRequest;
 import com.harera.ecommerce.authorization.model.oauth.OauthSignupRequest;
 import com.harera.ecommerce.authorization.model.otp.OTP;
-import com.harera.ecommerce.authorization.model.user.AuthUser;
+import com.harera.ecommerce.authorization.model.user.User;
 import com.harera.ecommerce.authorization.repository.UserRepository;
 import com.harera.ecommerce.authorization.repository.otp.OtpRepository;
 import com.harera.ecommerce.authorization.service.firebase.FirebaseServiceImpl;
@@ -200,7 +200,7 @@ public class AuthValidation {
     private void validatePassword(LoginRequest loginRequest) {
         String subjectPayload = loginRequest.getSubject();
         Subject subjectType = getSubject(subjectPayload);
-        Optional<AuthUser> user;
+        Optional<User> user;
         if (subjectType instanceof Subject.PhoneNumber) {
             user = userRepository.findByMobile(subjectPayload);
         } else if (subjectType instanceof Subject.Email) {

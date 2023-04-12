@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.harera.ecommerce.authorization.model.auth.LoginRequest;
 import com.harera.ecommerce.authorization.model.auth.LoginResponse;
-import com.harera.ecommerce.authorization.model.user.AuthUser;
+import com.harera.ecommerce.authorization.model.user.User;
 import com.harera.ecommerce.framework.exception.LoginException;
 import com.harera.ecommerce.framework.exception.SignupException;
 import com.harera.ecommerce.framework.util.ErrorCode;
@@ -74,7 +74,7 @@ public class KeycloakServiceImpl implements KeycloakService {
     }
 
     @Override
-    public void signup(AuthUser user, String rawPassword) {
+    public void signup(User user, String rawPassword) {
         UserRepresentation userRepresentation = modelMapper.map(user, UserRepresentation.class);
         userRepresentation.setEnabled(true);
         userRepresentation.setEmailVerified(true);

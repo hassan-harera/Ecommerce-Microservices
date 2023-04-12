@@ -1,59 +1,55 @@
 package com.harera.ecommerce.authorization.model.user;
 
+import jakarta.persistence.Basic;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.harera.ecommerce.framework.model.BaseEntity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 @Setter
 @Getter
-@Entity
-@Table(name = "user_")
-public class AuthUser extends BaseEntity implements UserDetails {
+@Document(value = "user")
+public class User extends BaseEntity implements UserDetails {
 
-    @Basic
-    @Column(name = "phone_number")
-    private String mobile;
-
-    @Basic
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Basic
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Basic
-    @Column(name = "email")
-    private String email;
-
-    @Basic
-    @Column(name = "password")
-    private String password;
-
-    @Basic
-    @Column(name = "username")
-    private String username;
-
-    @Basic
-    @Column(name = "uid")
+    @Field(name = "uid")
     private String uid;
 
-    @Column(name = "device_token")
+    @Field(name = "username")
+    private String username;
+
+    @Field(name = "mobile")
+    private String mobile;
+
+    @Field(name = "first_name")
+    private String firstName;
+
+    @Field(name = "last_name")
+    private String lastName;
+
+    @Field(name = "email")
+    private String email;
+
+    @Field(name = "password")
+    private String password;
+
+    @Field(name = "device_token")
     private String deviceToken;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @Field(name = "authorities")
     private List<UserAuthority> authorities;
 
     public String getUsername() {
-        return getMobile();
+        if (username == null)
+            return getMobile();
+        return username;
     }
 
     @Override
