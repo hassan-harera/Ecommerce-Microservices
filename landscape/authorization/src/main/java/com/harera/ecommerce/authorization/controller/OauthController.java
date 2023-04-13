@@ -2,22 +2,19 @@ package com.harera.ecommerce.authorization.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import com.harera.ecommerce.authorization.service.oauth.OauthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.harera.ecommerce.authorization.model.auth.FirebaseOauthToken;
-import com.harera.ecommerce.authorization.model.auth.LoginRequest;
 import com.harera.ecommerce.authorization.model.auth.LoginResponse;
 import com.harera.ecommerce.authorization.model.auth.SignupResponse;
-import com.harera.ecommerce.authorization.model.oauth.OAuthLoginRequest;
+import com.harera.ecommerce.authorization.model.oauth.OauthLoginRequest;
 import com.harera.ecommerce.authorization.model.oauth.OauthSignupRequest;
-import com.harera.ecommerce.authorization.service.oauth.OauthService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/v1/oauth")
 @Tag(name = "Oauth", description = "Oauth API")
@@ -31,7 +28,7 @@ public class OauthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-                    @RequestBody OAuthLoginRequest loginRequest) {
+                    @RequestBody OauthLoginRequest loginRequest) {
         return ok(oauthService.login(loginRequest));
     }
 
@@ -39,11 +36,5 @@ public class OauthController {
     public ResponseEntity<SignupResponse> oauthSignup(
             @RequestBody OauthSignupRequest oauthSignupRequest) {
         return ok(oauthService.signup(oauthSignupRequest));
-    }
-
-    @PostMapping("/firebase/tokens")
-    public ResponseEntity<FirebaseOauthToken> generateFirebaseToken(
-                    @RequestBody LoginRequest loginRequest) {
-        return ok(oauthService.generateFirebaseToken(loginRequest));
     }
 }

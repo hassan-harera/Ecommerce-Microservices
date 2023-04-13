@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.harera.ecommerce.authorization.service.auth.AuthValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +14,6 @@ import com.harera.ecommerce.authorization.model.user.User;
 import com.harera.ecommerce.authorization.model.user.Role;
 import com.harera.ecommerce.authorization.repository.TokenRepository;
 import com.harera.ecommerce.authorization.repository.UserRepository;
-import com.harera.ecommerce.authorization.service.auth.AuthValidation;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

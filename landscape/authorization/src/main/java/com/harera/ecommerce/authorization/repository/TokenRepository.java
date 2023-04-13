@@ -29,12 +29,4 @@ public class TokenRepository extends RedisTemplate<String, Object> {
     public void addRefreshToken(long userId, String token) {
         this.opsForHash().put(REFRESH_TOKEN, token, userId);
     }
-
-    public void removeUserToken(String token) {
-        this.opsForHash().delete(TOKEN, token);
-    }
-
-    public void removeUserRefreshToken(String refreshToken) {
-        this.opsForHash().delete(REFRESH_TOKEN, refreshToken);
-    }
 }

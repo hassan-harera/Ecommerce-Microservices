@@ -46,7 +46,7 @@ public class SmsService {
             url = b.toString();
             log.debug("Execute SMS API with the following url: " + url);
         } catch (URISyntaxException e) {
-            log.error(e);
+            // just ignore me
         }
         return url;
     }

@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @RedisHash(value = "OTP", timeToLive = 1800)
 public class OTP implements Serializable {
 
+    private LocalDateTime timestamp;
     private String id;
     private String otp;
-    private LocalDateTime timestamp;
 
     public OTP(LocalDateTime timestamp, String mobile, String otp) {
         this.timestamp = timestamp;

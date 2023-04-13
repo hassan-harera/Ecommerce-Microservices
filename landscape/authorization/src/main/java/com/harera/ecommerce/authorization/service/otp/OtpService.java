@@ -1,6 +1,7 @@
 package com.harera.ecommerce.authorization.service.otp;
 
 import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
