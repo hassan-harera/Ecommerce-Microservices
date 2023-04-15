@@ -1,0 +1,20 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.7"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
+    <changeSet id="0009" author="hharera@ecommerce.com">
+        <sql>
+            INSERT INTO shop (id, name, address, phone, email)
+            VALUES (DEFAULT, 'Fashionista', '123 Main St', '(555) 123-4567', 'info@fashionista.com');
+            INSERT INTO shop (id, name, address, phone, email)
+            VALUES (DEFAULT, 'Green Thumb', '456 Elm Ave', '(555) 987-6543', 'info@greenthumb.com');
+            INSERT INTO shop (id, name, address, phone, email)
+            VALUES (DEFAULT, 'TechZone', '789 Oak Blvd', '(555) 555-1212', 'info@techzone.com');
+            INSERT INTO shop (id, name, address, phone, email)
+            VALUES (DEFAULT, 'Home Decor', '321 Maple Rd', '(555) 456-7890', 'info@homedecor.com');
+            INSERT INTO shop (id, name, address, phone, email)
+            VALUES (DEFAULT, 'Pet Paradise', '654 Pine St', '(555) 789-1234', 'info@petparadise.com');
+        </sql>
+    </changeSet>
+</databaseChangeLog>
