@@ -1,0 +1,153 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.7"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
+    <changeSet id="0009" author="hharera@ecommerce.com">
+        <sql>
+            CREATE TABLE categories
+            (
+            id   BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL
+            );
+
+            CREATE TABLE products
+            (
+            id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name        VARCHAR(255)    NOT NULL,
+            description TEXT            NOT NULL,
+            price       DECIMAL(10, 2)  NOT NULL,
+            quantity    INT             NOT NULL,
+            image_url   VARCHAR(255)    NOT NULL,
+            category_id BIGINT UNSIGNED NOT NULL,
+            created_at  DATETIME        NOT NULL,
+            updated_at  DATETIME        NOT NULL,
+            CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES categories (id)
+            );
+
+            CREATE TABLE reviews
+            (
+            id         BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            title      VARCHAR(255)    NOT NULL,
+            text       TEXT            NOT NULL,
+            rating     INT             NOT NULL,
+            product_id BIGINT UNSIGNED NOT NULL,
+            created_at DATETIME        NOT NULL,
+            updated_at DATETIME        NOT NULL,
+            CONSTRAINT fk_review_product FOREIGN KEY (product_id) REFERENCES products (id)
+            );
+
+            CREATE TABLE product_variants
+            (
+            id         BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name       VARCHAR(255)    NOT NULL,
+            price      DECIMAL(10, 2)  NOT NULL,
+            quantity   INT             NOT NULL,
+            product_id BIGINT UNSIGNED NOT NULL,
+            created_at DATETIME        NOT NULL,
+            updated_at DATETIME        NOT NULL,
+            CONSTRAINT fk_variant_product FOREIGN KEY (product_id) REFERENCES products (id)
+            );
+
+            CREATE TABLE tags
+            (
+            id   BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL
+            );
+
+            CREATE TABLE product_tag
+            (
+            product_id BIGINT UNSIGNED NOT NULL,
+            tag_id     BIGINT UNSIGNED NOT NULL,
+            CONSTRAINT pk_product_tag PRIMARY KEY (product_id, tag_id),
+            CONSTRAINT fk_product_tag_product FOREIGN KEY (product_id) REFERENCES products (id),
+            CONSTRAINT fk_product_tag_tag FOREIGN KEY (tag_id) REFERENCES tags (id)
+            );
+
+            CREATE TABLE promotions
+            (
+            id         BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name       VARCHAR(255)   NOT NULL,
+            discount   DECIMAL(10, 2) NOT NULL,
+            created_at DATETIME       NOT NULL,
+            updated_at DATETIME       NOT NULL
+            );
+
+            CREATE TABLE promotion_product
+            (
+            promotion_id BIGINT UNSIGNED NOT NULL,
+            product_id   BIGINT UNSIGNED NOT NULL,
+            CONSTRAINT pk_promotion_product PRIMARY KEY (promotion_id, product_id),
+            CONSTRAINT fk_promotion_product_promotion FOREIGN KEY (promotion_id) REFERENCES promotions (id),
+            CONSTRAINT fk_promotion_product_product FOREIGN KEY (product_id) REFERENCES products (id)
+            );
+
+            INSERT INTO categories (name)
+            VALUES ('Electronics'),
+            ('Clothing'),
+            ('Home and Kitchen');
+
+            INSERT INTO reviews (title, text, rating, product_id, created_at, updated_at)
+            select 'Great product',
+            'I love this product! It works great and is very easy to use.',
+            5,
+            id,
+            NOW(),
+            NOW()
+            from products;
+
+            INSERT INTO reviews (title, text, rating, product_id, created_at, updated_at)
+            select 'Disappointing',
+            'I was really hoping this product would work better, but it was a big letdown.',
+            2,
+            2,
+            NOW(),
+            NOW()
+            from products;
+
+            INSERT INTO reviews (title, text, rating, product_id, created_at, updated_at)
+            select 'Decent',
+            'This product is okay. It gets the job done, but there are better options out there.',
+            3,
+            3,
+            NOW(),
+            NOW()
+            from products;
+
+
+            INSERT INTO product_variants (name, price, quantity, product_id, created_at, updated_at)
+            VALUES ('Small', 9.99, 100, 1, NOW(), NOW()),
+            ('Medium', 14.99, 50, 1, NOW(), NOW()),
+            ('Large', 19.99, 25, 1, NOW(), NOW());
+
+            INSERT INTO tags (name)
+            VALUES ('Wireless'),
+            ('Fashionable'),
+            ('Eco-friendly');
+
+            INSERT INTO products (name, description, price, quantity, image_url, category_id, created_at, updated_at)
+            VALUES ('Wireless earbuds', 'Enjoy wireless freedom with these earbuds.', 99.99, 500, 'https://example.com/earbuds.jpg',
+            1, NOW(), NOW()),
+            ('T-shirt', 'A comfortable t-shirt for everyday wear.', 19.99, 1000, 'https://example.com/tshirt.jpg', 2, NOW(),
+            NOW()),
+            ('Food processor', 'Make food prep a breeze with this powerful food processor.', 149.99, 200,
+            'https://example.com/food-processor.jpg', 3, NOW(), NOW());
+
+            INSERT INTO product_tag (product_id, tag_id)
+            VALUES (1, 1),
+            (1, 2),
+            (2, 2),
+            (3, 3);
+
+            INSERT INTO promotions (name, discount, created_at, updated_at)
+            VALUES ('Spring sale', 0.1, NOW(), NOW()),
+            ('Summer clearance', 0.25, NOW(), NOW());
+
+            INSERT INTO promotion_product (promotion_id, product_id)
+            VALUES (1, 1),
+            (1, 2),
+            (2, 2),
+            (2, 3);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
